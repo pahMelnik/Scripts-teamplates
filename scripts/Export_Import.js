@@ -52,6 +52,17 @@ const ENV = {
         ORACLE - Экспорт данных из Oracle используя SELECT запрос
         */
         PARAMS: {
+            NAME: "***", // Названиие МК для выгрузки, если выбран источниик MULTICUBE/OM_MULTICUBE
+            VIEW: "***", // Названиие предсавления, если выбран источниик MULTICUBE/OM_MULTICUBE
+            FORMULA_FILTER: `***`, // Формула для опроеделения данных, которые отдаются на экспорт, форммула пишется в формате Оптмакрос. `TRUE`, если хотим отправиить все данные.
+            ROW_HEADERS: { /*При экспорте справочника из ОМ (доступно для источников LIST и MULTICUBE) позволяет экспортиировать:
+                             Display Name справочников (при указании значения параметра как LABEL);
+                             Item Name справочников (при указании значения параметра как  NAME);
+                             Code справочника (при указании значения параметра как  CODE);
+                             Пусто (при указании значения параметра как  NONE).
+                            */
+                SCR_TYPE: "***",
+            },
             QUERY: {
                 TYPE:"RAW_QUERY", //
                 PARAMS: {
@@ -92,10 +103,10 @@ const ENV = {
         MYSQL_IMPORT_RAW - Импорт данных в MySQL используя CSV файл, работает только с источником OM_MULTICUBE. Самый быстрый вариант импорта данных OLAP -> OLTP, из OM выгружается CSV файл и без дополнительного ETL сразу передается в MySQL, быстрее этого подхода для обмена данными OLAP -> OLTP на данный момент ничего нет. 
         */
         PARAMS: {
-            NAME: "KPF Import data from OLTP",
-            TRANSFORM: {
-                DOWNLOAD_TRANSFORM_FILE: false,
-                DOWNLOAD_IMPORT_REPORT_FILE: false,
+            NAME: "KPF Import data from OLTP", // Название МК/Справочника для приемников LIST, MULTICUBE, OM_MULTICUBE
+            TRANSFORM: { // Преобразование файлов для иммпорма в справочники и МК в ОМ
+                DOWNLOAD_TRANSFORM_FILE: false, // true/false Условие скачивания преобразованного файла
+                DOWNLOAD_IMPORT_REPORT_FILE: false, // true/false Условие скачивания отчета о загрузке данных
                 CHARSET: "WINDOWS-1251", //UTF-8|WINDOWS-1251
                 SRC_TO_DEST_COLUMN_MAP: {
 				"DT":"DT",
@@ -112,6 +123,15 @@ const ENV = {
                },
                 CUSTOM_COLUMNS: [],
                 SRC_COLUMN_PREPARE_DATA_MAP: {}
+            },
+            TABLE: "***", // Название таблицы для импорта в БД
+            CONNECTION: { // Параметры подключения
+                HOST: "***", // ip адресс подключения к СУБД
+                PORT: 0000, // Порт подключения к СУБД
+                USER: "***", // Пользоватьель
+                PASSWORD: "***", // Пароль
+                DB: "***", // Название СУБД к которой мы подключаемся
+                SID: "" // Параметр указываемый только для ORACLE, для остальных СУБД его быть не должно
             },
             CLEANER: {
                 STATUS: true,
